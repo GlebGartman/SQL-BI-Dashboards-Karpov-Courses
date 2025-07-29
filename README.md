@@ -100,10 +100,18 @@
 
 ---
 
+<summary><strong>Задание 7: Среднее время доставки</strong></summary>
 
+📌 Для каждого дня рассчитан следующий показатель:
 
+- `minutes_to_deliver` — среднее время доставки заказов в минутах  
+- `date` — дата
 
+⏱ В расчётах учитывались только **доставленные заказы**, отменённые — исключены.  
+📊 Среднее время доставки округлено до целых минут.  
+📅 Результат отсортирован по дате в порядке возрастания.
 
+---
 
 
 
@@ -403,7 +411,6 @@ on zakazy.time_user = pay_users.time_user) as kolvo_users
       
       on time_courier = time_user
       
-
 ```
 
 ### Динамика числа пользователей и заказов на одного курьера
@@ -413,17 +420,46 @@ on zakazy.time_user = pay_users.time_user) as kolvo_users
 ---
 
 
-<summary><strong>Задание 7: Код и график </strong></summary>
+<summary><strong>Задание 7: Код и график - Среднее время доставки</strong></summary>
 
+```sql
+WITH plat as (
+   SELECT order_id
+   FROM user_actions
+   group by order_id
+   HAVING count(order_id) = 1
+   order by order_id
+   ),
+   
+   dostavka as ( 
+   SELECT order_id
+   FROM courier_actions
+   group by order_id
+   HAVING count(order_id) = 2
+   order by order_id)
+   
+   
+  SELECT deliver_time::DATE as date, (avg(diff) / 60)::INTEGER as minutes_to_deliver FROM 
+   (SELECT order_id, accept_time, deliver_time, EXTRACT(EPOCH from AGE(deliver_time, accept_time)) as diff FROM 
+     (SELECT order_id, min(time) as accept_time, max(time) as deliver_time FROM 
+      (SELECT * FROM courier_actions
+      WHERE order_id in (SELECT * FROM dostavka) and order_id in (SELECT * FROM plat)) as kyrery
+    group by order_id 
+    order by order_id) as vremya) as vremya_zakaz 
+   group by date
+   order by date
 
+```
 
+### Динамика среднего времени доставки заказов
 
+![График: среднее время доставки](https://drive.google.com/uc?export=view&id=1TlQhF3_v7Y1XD-A1Y5vugl0u2GPsJBrE)
 
+---
 
+<summary><strong>Задание 8: Код и график - </strong></summary>
 
-
-
-
+```sql
 
 
 
