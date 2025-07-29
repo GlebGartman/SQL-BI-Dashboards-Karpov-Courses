@@ -28,7 +28,8 @@
 </details>
 
 
-<details>
+<summary><strong>Задание 1: Коды SQL и Визуализации</strong></summary>
+
 <summary><strong>Задание 1: Код и график — Динамика пользователей и курьеров</strong></summary>
 
 ### Код
@@ -65,7 +66,7 @@ FROM
 
   ON time_courier = time_user
 ) as kolvo;
-```  <!-- ВОТ ОНА, ЗАКРЫВАЮЩАЯ ТРОЙНАЯ КАВЫЧКА -->
+```
 
 ### Динамика новых пользователей и курьеров
 
@@ -78,7 +79,6 @@ FROM
 
 
 
----
 </details>
 
 <details> 
