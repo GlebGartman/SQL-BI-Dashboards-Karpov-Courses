@@ -65,7 +65,7 @@ FROM
     ) as porydok_couriers
 
   ON time_courier = time_user
-) as kolvo
+) as kolvo```
 
 <h3 align="center">Динамика новых пользователей и курьеров</h3> <p align="center"> <img src="https://drive.google.com/uc?export=view&id=1utO-05YZpRS3nRqrh6x_8n9m1BiIJjgs" width="600"/> </p>
 
