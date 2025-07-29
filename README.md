@@ -7,3 +7,25 @@
 число новых курьеров, прирост курьеров, число активных курьеров и т.д..  
 Для анализа использовались SQL-запросы различной сложности: LEFT/RIGHT/INNER JOIN, оконные функции, агрегаты, CTE.
 </p>
+
+
+<details>
+<summary><strong>Задания</strong></summary>
+
+
+
+
+</details>
+
+<details> 
+<summary><strong>SQL-запросы и Визуализации</strong></summary>
+
+
+
+
+
+</details>
+
+<details> 
+
+<summary><strong>Выводы</strong></summary>
