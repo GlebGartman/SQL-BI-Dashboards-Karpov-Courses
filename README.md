@@ -87,6 +87,26 @@
 
 ---
 
+<summary><strong>Задание 6: Нагрузка на одного курьера</strong></summary>
+
+📌 Для каждого дня рассчитаны показатели нагрузки на одного активного курьера:
+
+- `users_per_courier` — число платящих пользователей на одного активного курьера  
+- `orders_per_courier` — число заказов на одного активного курьера  
+- `date` — дата
+
+📊 Показатели округлены до двух знаков после запятой.  
+📅 Результаты отсортированы по дате в порядке возрастания.
+
+---
+
+
+
+
+
+
+
+
 </details>
 
 
@@ -342,19 +362,58 @@ on zakazy.time_user = pay_users.time_user) as kolvo_users
 
 ---
 
-<summary><strong>Задание 6: Код и график - </strong></summary>
+<summary><strong>Задание 6: Код и график - Нагрузка на одного курьера</strong></summary>
+
+### Код
+
+```sql
+ WITH plat as (
+   SELECT order_id
+   FROM user_actions
+   group by order_id
+   HAVING count(order_id) = 1
+   order by order_id
+   ),
+   
+   dostavka as ( 
+   SELECT order_id
+   FROM courier_actions
+   group by order_id
+   HAVING count(order_id) = 2
+   order by order_id)
+   
+   
+   SELECT time_courier as date, ROUND(paying_users / active_couriers::NUMERIC, 2) as users_per_courier, orders_per_courier FROM
+     (SELECT time_user, count(DISTINCT user_id) FILTER (WHERE order_id in (SELECT * FROM plat)) as paying_users FROM 
+       (SELECT order_id, user_id, time::date as time_user, row_number() OVER(PARTITION BY user_id ORDER BY time) as porydok FROM user_actions
+        order by user_id) as porydok_users
+      group by time_user
+      order by time_user) as users
+      
+      JOIN
+     
+    (SELECT time_courier, active_couriers, active_orders, ROUND(active_orders / active_couriers::NUMERIC, 2) as orders_per_courier FROM  
+     (SELECT time_courier,
+      count(DISTINCT courier_id) FILTER(WHERE order_id in (SELECT * FROM dostavka)) as active_couriers, 
+      count(DISTINCT order_id) FILTER(WHERE action = 'accept_order' and order_id in (SELECT * FROM plat)) as active_orders FROM
+      (SELECT order_id, courier_id, time::date as time_courier, action, row_number() OVER(PARTITION BY courier_id ORDER BY time) as porydok FROM courier_actions 
+         order by courier_id) as porydok_couriers
+      group by time_courier
+      order by time_courier) as zakazy) as couriers
+      
+      on time_courier = time_user
+      
+
+```
+
+### Динамика числа пользователей и заказов на одного курьера
+
+![График: пользователи и заказы на одного курьера](https://drive.google.com/uc?export=view&id=1Pom84jhHidr3iB1dfb6aTADgSg6ymWQ8)
+
+---
 
 
-
-
-
-
-
-
-
-
-
-
+<summary><strong>Задание 7: Код и график </strong></summary>
 
 
 
