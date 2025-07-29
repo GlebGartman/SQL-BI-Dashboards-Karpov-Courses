@@ -70,9 +70,22 @@
 
 ---
 
+<summary><strong>Задание 5: Первые заказы и заказы новых пользователей</strong></summary>
 
+📌 Для каждого дня рассчитаны следующие показатели:
 
+- `orders` — общее число заказов  
+- `first_orders` — число **первых заказов** пользователей  
+- `new_users_orders` — число заказов, сделанных **в день первого использования**  
+- `first_orders_share` — доля первых заказов от общего числа заказов (%)  
+- `new_users_orders_share` — доля заказов новых пользователей от общего числа заказов (%)  
+- `date` — дата
 
+🔢 Количественные показатели выражены целыми числами.  
+📊 Доли рассчитаны в процентах, округлены до двух знаков после запятой.  
+📅 Результат отсортирован по возрастанию даты.
+
+---
 
 </details>
 
@@ -272,17 +285,64 @@ on zakazy.time_user = pay_users.time_user) as kolvo_users
 
 ---
 
-<summary><strong>Задание 5: Код и график </strong></summary>
+<summary><strong>Задание 5: Код и график - Первые заказы и заказы новых пользователей</strong></summary>
+
+### Код
+
+```sql
+ WITH plat as (
+   SELECT order_id
+   FROM user_actions
+   group by order_id
+   HAVING count(order_id) = 1
+   order by order_id
+   ),
+   
+   dostavka as ( 
+   SELECT order_id
+   FROM courier_actions
+   group by order_id
+   HAVING count(order_id) = 2
+   order by order_id)
+   
+
+ 
+ SELECT date,
+ orders,
+ first_orders,
+ new_users_orders,
+ ROUND(first_orders * 100 / orders::NUMERIC, 2) as first_orders_share,
+ ROUND(new_users_orders * 100 / orders::NUMERIC, 2) as new_users_orders_share
+ FROM
+  (SELECT time::DATE as date,
+   count(order_id) as orders,
+   count(order_id) FILTER(WHERE perv = 1) as first_orders,
+   count(order_id) FILTER(WHERE perv = new_zakazy)  as new_users_orders
+   FROM  
+    (SELECT user_id, order_id, action, time, 
+     row_number() over(PARTITION BY user_id order by time) as perv,
+     row_number() over(PARTITION BY user_id, time::DATE order by time) as new_zakazy
+     FROM user_actions
+     WHERE order_id in (SELECT * FROM plat) and order_id in (SELECT * FROM dostavka)
+     order by user_id) as kolvo
+    group by date) as chislo
+  order by date
 
 
+```
+
+### Динамика общего числа заказов, первых заказов и заказов новых пользователей
+
+![График: общее число заказов, первые заказы и заказы новых пользователей](https://drive.google.com/uc?export=view&id=1wgOsmV1aESJPmckZXNmBGJSj4wJSLXli)
+
+### Доля первых заказов и заказов новых пользователей в общем числе заказов
+
+![График: доля первых заказов и заказов новых пользователей](https://drive.google.com/uc?export=view&id=156PJkrx9Tb4US5EjVopOTwiuGlorO2vI)
 
 
+---
 
-
-
-
-
-
+<summary><strong>Задание 6: Код и график - </strong></summary>
 
 
 
