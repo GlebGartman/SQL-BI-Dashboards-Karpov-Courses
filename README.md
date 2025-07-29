@@ -518,6 +518,6 @@ WITH plat as (
 
 📌 На основе рассчитанных показателей и визуализированных графиков был построен итоговый дашборд.
 
-🔗 [Открыть дашборд в Redash](https://redash.public.karpov.courses/public/dashboards/rUhrM7LM2eXf6rI0F6y5aENIzXNnEGr8zJImLWk8?org_slug=default)****
+🔗 [Открыть дашборд в Redash](https://redash.public.karpov.courses/public/dashboards/rUhrM7LM2eXf6rI0F6y5aENIzXNnEGr8zJImLWk8?org_slug=default)
 
 </details>
