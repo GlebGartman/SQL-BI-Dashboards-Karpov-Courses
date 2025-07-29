@@ -27,12 +27,11 @@
 ---
 </details>
 
-<details> 
-<summary><strong>SQL-запросы и Визуализации</strong></summary>
 
+<details>
 <summary><strong>Задание 1: Код и график — Динамика пользователей и курьеров</strong></summary>
 
-<h3 align="center">Код</h3>
+### Код
 
 ```sql
 SELECT date, new_users, new_couriers, 
@@ -65,11 +64,18 @@ FROM
     ) as porydok_couriers
 
   ON time_courier = time_user
-) as kolvo```
+) as kolvo;
+```  <!-- ВОТ ОНА, ЗАКРЫВАЮЩАЯ ТРОЙНАЯ КАВЫЧКА -->
 
-<h3 align="center">Динамика новых пользователей и курьеров</h3> <p align="center"> <img src="https://drive.google.com/uc?export=view&id=1utO-05YZpRS3nRqrh6x_8n9m1BiIJjgs" width="600"/> </p>
+### Динамика новых пользователей и курьеров
 
-<h3 align="center">Динамика общего числа пользователей</h3> <p align="center"> <img src="https://drive.google.com/uc?export=view&id=1e-nVF563jSuhsUVFSUA3gTwyMko3EB8y" width="600"/> </p> </details> 
+![График новых пользователей и курьеров](https://drive.google.com/uc?export=view&id=1utO-05YZpRS3nRqrh6x_8n9m1BiIJjgs)
+
+### Динамика общего числа пользователей
+
+![График общего числа пользователей](https://drive.google.com/uc?export=view&id=1e-nVF563jSuhsUVFSUA3gTwyMko3EB8y)
+
+
 
 
 ---
