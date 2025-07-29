@@ -95,7 +95,7 @@ FROM
 ![График общего числа пользователей](https://drive.google.com/uc?export=view&id=1e-nVF563jSuhsUVFSUA3gTwyMko3EB8y)
 
 
-<summary><strong>Задание 1: Код и график — Прирост показателей в процентах</strong></summary>
+<summary><strong>Задание 2: Код и график — Прирост показателей в процентах</strong></summary>
 
 ### Код
 
