@@ -112,6 +112,7 @@ FROM
 
 ![График общего числа пользователей](https://drive.google.com/uc?export=view&id=1e-nVF563jSuhsUVFSUA3gTwyMko3EB8y)
 
+---
 
 <summary><strong>Задание 2: Код и график — Прирост показателей в процентах</strong></summary>
 
@@ -157,10 +158,62 @@ FROM
 
 ![Динамика прироста общего числа пользователей и курьеров](https://drive.google.com/uc?export=view&id=1icXQY02osg4VnqJoHWMnL04OBT_scHhn)
 
+---
 
 
+<summary><strong>Задание 3: Код и график —  Платящие пользователи и активные курьеры</strong></summary>
 
+### Код
 
+```sql
+  WITH plat as (
+   SELECT order_id
+   FROM user_actions
+   group by order_id
+   HAVING count(order_id) = 1
+   order by order_id
+   ),
+   
+   dostavka as ( 
+   SELECT order_id
+   FROM courier_actions
+   group by order_id
+   HAVING count(order_id) = 2
+   order by order_id)
+   
+
+SELECT date,
+paying_users,
+active_couriers,
+ROUND(paying_users * 100 / total_users::NUMERIC, 2) as paying_users_share,
+ROUND(active_couriers * 100 / total_couriers::NUMERIC, 2) as active_couriers_share
+FROM 
+ (SELECT date, paying_users, sum(new_users) over(order by date)::INTEGER as total_users, paying_couriers as active_couriers,  sum(new_couriers) over(order by date)::INTEGER  as total_couriers FROM
+  (SELECT  time_user as date, new_users, paying_users, new_couriers, paying_couriers FROM 
+   (SELECT time_user, count(time_user) FILTER (WHERE porydok = 1) as new_users, count(DISTINCT user_id) FILTER (WHERE order_id in (SELECT * FROM plat)) as paying_users FROM 
+      (SELECT order_id, user_id, time::date as time_user, row_number() OVER(PARTITION BY user_id ORDER BY time) as porydok FROM user_actions
+       order by user_id) as porydok_users
+     group by time_user
+     order by time_user) as porydok_users
+    
+     JOIN
+   
+     (SELECT time_courier, count(time_courier) FILTER (WHERE porydok = 1) as new_couriers, count(DISTINCT courier_id) FILTER (WHERE order_id in (SELECT * FROM dostavka)) as paying_couriers FROM 
+      (SELECT order_id, courier_id, time::date as time_courier, row_number() OVER(PARTITION BY courier_id ORDER BY time) as porydok FROM courier_actions
+       order by courier_id) as porydok_couriers
+     group by time_courier
+     order by time_courier) as porydok_couriers
+   
+     on time_user = time_courier) as spisok) as pay_total
+```
+
+### Динамика активности платящих пользователей и курьеров
+
+![График: платящие пользователи и активные курьеры](https://drive.google.com/uc?export=view&id=1eIjAjc-Q1jPW0GJRCErM5_9g493P94Om)
+
+### Доля платящих пользователей и активных курьеров
+
+![График: доля платящих пользователей и активных курьеров](https://drive.google.com/uc?export=view&id=1BzlEcj1iwV6rgeaHPCrMADZDy1UkptpW)
 
 
 
