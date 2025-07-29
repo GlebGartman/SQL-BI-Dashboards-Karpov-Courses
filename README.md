@@ -55,7 +55,20 @@
 📊 Доли выражены в процентах и округлены до двух знаков после запятой.  
 📅 Результат отсортирован по дате в порядке возрастания.
 
+---
 
+<summary><strong>Задание 4: Повторные и единичные заказы пользователей</strong></summary>
+
+📌 Для каждого дня рассчитаны доли платящих пользователей:
+
+- `single_order_users_share` — доля пользователей, сделавших **один заказ**  
+- `several_orders_users_share` — доля пользователей, сделавших **более одного заказа**  
+- `date` — дата
+
+📊 Доли рассчитаны от общего числа платящих пользователей за день, выражены в процентах и округлены до двух знаков после запятой.  
+📅 Результаты отсортированы по возрастанию даты.
+
+---
 
 
 
@@ -216,15 +229,50 @@ FROM
 ![График: доля платящих пользователей и активных курьеров](https://drive.google.com/uc?export=view&id=1BzlEcj1iwV6rgeaHPCrMADZDy1UkptpW)
 
 
+---
 
 
+<summary><strong>Задание 4: Код и график —  Повторные и единичные заказы пользователей</strong></summary>
+
+### Код
+
+```sql
+  SELECT order_id
+   FROM user_actions
+   group by order_id
+   HAVING count(order_id) = 1
+   order by order_id
+   )
+   
+SELECT date, ROUND(edinic * 100 / paying_users::NUMERIC, 2) as single_order_users_share, ROUND(mnogo * 100 / paying_users::NUMERIC, 2) as several_orders_users_share FROM 
+ (SELECT pay_users.time_user as date, paying_users, edinic, mnogo FROM 
+  (SELECT time_user, count(DISTINCT user_id) FILTER (WHERE order_id in (SELECT * FROM plat)) as paying_users FROM 
+       (SELECT order_id, user_id, time::date as time_user, row_number() OVER(PARTITION BY user_id ORDER BY time) as porydok FROM user_actions
+        order by user_id) as porydok_users
+      group by time_user
+      order by time_user) as pay_users
+   
+    JOIN
+    
+  (SELECT time_user, count(user_id) FILTER(WHERE kolvo = 1) as edinic, count(user_id) FILTER(WHERE kolvo > 1) as mnogo FROM 
+       (SELECT time::date as time_user, user_id, count(user_id) as kolvo FROM user_actions
+        WHERE order_id in (SELECT * FROM plat)
+        group by time_user, user_id) as kolvo_zakazov
+    group by time_user
+    order by time_user) as zakazy 
+
+on zakazy.time_user = pay_users.time_user) as kolvo_users
+
+```
+
+### Доли пользователей с одним и несколькими заказами
+
+![График: доли пользователей с одним и несколькими заказами](https://drive.google.com/uc?export=view&id=1JNS3PEi35YFaQeru784HHRwtrv6HRpvT)
 
 
+---
 
-
-
-
-
+<summary><strong>Задание 5: Код и график </strong></summary>
 
 
 
