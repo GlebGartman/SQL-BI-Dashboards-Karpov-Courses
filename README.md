@@ -28,6 +28,8 @@
 </details>
 
 
+<details>
+<summary><strong>Коды SQL и Визуализации</strong></summary>       
 <summary><strong>Задание 1: Код и график — Динамика пользователей и курьеров</strong></summary>
 
 ### Код
@@ -73,8 +75,6 @@ FROM
 ### Динамика общего числа пользователей
 
 ![График общего числа пользователей](https://drive.google.com/uc?export=view&id=1e-nVF563jSuhsUVFSUA3gTwyMko3EB8y)
-
-
 
 
 </details>
