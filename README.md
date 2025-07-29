@@ -28,8 +28,6 @@
 </details>
 
 
-<summary><strong>Задание 1: Коды SQL и Визуализации</strong></summary>
-
 <summary><strong>Задание 1: Код и график — Динамика пользователей и курьеров</strong></summary>
 
 ### Код
