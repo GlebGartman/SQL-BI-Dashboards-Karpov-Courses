@@ -69,7 +69,7 @@ FROM
 
 <h3 align="center">Динамика новых пользователей и курьеров</h3> <p align="center"> <img src="https://drive.google.com/uc?export=view&id=1utO-05YZpRS3nRqrh6x_8n9m1BiIJjgs" width="600"/> </p>
 
-<h3 align="center">Динамика общего числа пользователей</h3> <p align="center"> <img src="https://drive.google.com/uc?export=view&id=1e-nVF563jSuhsUVFSUA3gTwyMko3EB8y" width="600"/> </p> </details> ```
+<h3 align="center">Динамика общего числа пользователей</h3> <p align="center"> <img src="https://drive.google.com/uc?export=view&id=1e-nVF563jSuhsUVFSUA3gTwyMko3EB8y" width="600"/> </p> </details> 
 
 
 ---
