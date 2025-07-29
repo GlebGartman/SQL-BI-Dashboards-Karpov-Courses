@@ -112,7 +112,17 @@
 📅 Результат отсортирован по дате в порядке возрастания.
 
 ---
+<summary><strong>Задание 8: Доставка и Отмена заказов по часам</strong></summary>
 
+📌 Для каждого часа суток рассчитаны следующие показатели:
+
+- `successful_orders` — число доставленных заказов  
+- `canceled_orders` — число отменённых заказов  
+- `cancel_rate` — доля отменённых заказов в общем числе заказов  
+- `hour` — час оформления заказа (от 0 до 23)
+
+📊 Доля отмен рассчитана в **доле единицы** и округлена до **трёх знаков после запятой**.  
+📅 Результат отсортирован по возрастанию колонки `hour`.
 
 
 </details>
@@ -457,20 +467,45 @@ WITH plat as (
 
 ---
 
-<summary><strong>Задание 8: Код и график - </strong></summary>
+<summary><strong>Задание 8: Код и график - Доставка и Отмена заказов по часам</strong></summary>
 
 ```sql
+   WITH otmen as
+   (
+   SELECT order_id
+   FROM user_actions
+   group by order_id
+   HAVING count(order_id) = 2
+   order by order_id
+   ),
+   
+   dostavka as ( 
+   SELECT order_id
+   FROM courier_actions
+   group by order_id
+   HAVING count(order_id) = 2
+   order by order_id)
+   
 
+  SELECT
+  hour,  
+  successful_orders,
+  canceled_orders,
+  ROUND(canceled_orders / chislo::NUMERIC, 3) as cancel_rate
+  FROM
+   (SELECT hour,
+   count(order_id) FILTER(WHERE action = 'accept_order') as chislo,
+   count(order_id) FILTER(WHERE action = 'accept_order' and order_id in (SELECT * FROM dostavka)) as successful_orders,
+   count(order_id) FILTER(WHERE action = 'accept_order' and order_id in (SELECT * FROM otmen)) as canceled_orders 
+   FROM
+    (SELECT order_id, action, time, DATE_PART('hour', time)::INTEGER as hour FROM courier_actions) as zakazy
+    group by hour) as kolvo
+   order by hour 
+```
 
+### Динамика cancel rate и числа успешных/отменённых заказов по часам
 
-
-
-
-
-
-
-
-
+![График: cancel rate и количество заказов](https://drive.google.com/uc?export=view&id=1z2zTZzIKf-tpcVcs0r8zddHh7C16wWJF)
 
 
 
@@ -479,3 +514,10 @@ WITH plat as (
 <details> 
 
 <summary><strong>Выводы</strong></summary>
+<summary><strong>Выводы</strong></summary>
+
+📌 На основе рассчитанных показателей и визуализированных графиков был построен итоговый дашборд.
+
+🔗 [Открыть дашборд в Redash](https://redash.public.karpov.courses/public/dashboards/rUhrM7LM2eXf6rI0F6y5aENIzXNnEGr8zJImLWk8?org_slug=default)****
+
+</details>
