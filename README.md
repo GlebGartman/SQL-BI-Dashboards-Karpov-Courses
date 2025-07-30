@@ -10,7 +10,7 @@
 
 
 <details>
-<summary><strong>Задания</strong></summary>
+<summary><strong>Задачи</strong></summary>
 
 
 <summary><strong>Задание 1: Динамика пользователей и курьеров</strong></summary>
